@@ -1,0 +1,50 @@
+name: relber_e_alan
+description: "Aplicação de agenda para gestão de shows e eventos."
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_localizations:
+    sdk: flutter
+
+  # Pacotes necessários para a nova arquitetura
+  http: ^1.2.1
+  table_calendar: ^3.1.2
+  shared_preferences: ^2.2.3 # Adicione esta linha
+  intl: ^0.20.2
+  
+  # Pacotes de ícones e outros
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  # Dependência adicionada para gerar os ícones
+  flutter_launcher_icons: ^0.13.1
+
+# Configuração para o pacote de ícones
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon.png"
+  min_sdk_android: 21
+  # Configuração específica para a Web
+  web:
+    generate: true
+    image_path: "assets/icon.png"
+    background_color: "#000000"
+    theme_color: "#000000"
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icon.png
+

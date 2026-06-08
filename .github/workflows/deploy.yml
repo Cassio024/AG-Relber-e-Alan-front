@@ -1,0 +1,58 @@
+name: Build and Deploy Flutter Web to GitHub Pages
+
+# Aciona a ação sempre que houver um push para o ramo 'main'
+on:
+  push:
+    branches: ["main"]
+  # Permite que a ação seja executada manualmente a partir da aba Actions
+  workflow_dispatch:
+
+# Define as permissões necessárias para o deploy
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Permite apenas uma execução concorrente deste workflow
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  # Tarefa de construção
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build web app
+        run: flutter build web --release --base-href /Projeto-Agenda-de-Shows/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./build/web
+
+  # Tarefa de deploy
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

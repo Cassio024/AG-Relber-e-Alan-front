@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: agenda-relber-e-alan
+    env: static
+    buildCommand: flutter build web --release
+    staticPublishPath: ./build/web
+    routes:
+      - path: /*
+        template: index.html

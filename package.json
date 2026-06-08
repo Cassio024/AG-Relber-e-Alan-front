@@ -1,0 +1,13 @@
+{
+  "name": "agenda-relber-e-alan",
+  "version": "1.0.0",
+  "description": "Aplicação de agenda para gestão de shows e eventos",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "flutter build web --release"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

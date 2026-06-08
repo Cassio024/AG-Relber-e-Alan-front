@@ -1,0 +1,37 @@
+name: nome_do_seu_projeto # Mude para o nome real do seu projeto (opcional, mas recomendado)
+description: "A new Flutter project."
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.1 <4.0.0' # Você pode ajustar a versão do SDK se necessário
+
+# =============================================================
+# A SEÇÃO MAIS IMPORTANTE PARA O SEU PROBLEMA ESTÁ AQUI
+# =============================================================
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Adicione as dependências que você precisa aqui:
+  sqflite: ^2.3.3
+  path: ^1.9.0
+  
+  # Dependência padrão para ícones
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+
+# As linhas abaixo são configurações padrão do Flutter
+flutter:
+  uses-material-design: true
+
+  # Para adicionar assets (imagens, etc.), descomente e edite esta seção:
+  # assets:
+  #   - images/a_dot_burr.jpeg
+  #   - images/a_dot_ham.jpeg

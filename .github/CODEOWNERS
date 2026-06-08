@@ -1,0 +1,29 @@
+# CODEOWNERS file
+# This file defines code owners for different parts of the project
+# GitHub will request reviews from these owners on pull requests
+
+# Default owner for everything
+* @owner
+
+# Authentication and Security
+/lib/screens/login_screen.dart @owner
+/lib/screens/signup_screen.dart @owner
+/lib/screens/forgot_password_screen.dart @owner
+/lib/screens/reset_password_screen.dart @owner
+
+# Firebase and Backend Integration
+/lib/services/api_service.dart @owner
+
+# Models and Data
+/lib/models/ @owner
+
+# Security and Configuration
+.gitignore @owner
+SECURITY.md @owner
+.github/SECURITY.md @owner
+
+# CI/CD and Build Configuration
+.github/workflows/ @owner
+firebase.json @owner
+pubspec.yaml @owner
+pubspec.lock @owner
