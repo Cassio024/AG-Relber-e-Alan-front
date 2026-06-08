@@ -9,7 +9,7 @@ class ApiService {
     'API_BASE_URL',
   // note: backend routes are mounted under /api (see server's index.js)
   // include '/api' in the default so frontend calls match the backend routes
-  defaultValue: 'https://agendadeboraramos-api.onrender.com/api',
+  defaultValue: 'https://agenda-relber-e-alan.onrender.com/api',
   );
 
   // --- Funções de Utilizador ---
