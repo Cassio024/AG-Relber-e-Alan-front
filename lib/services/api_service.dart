@@ -3,16 +3,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  // Read base URL from build-time define so you can override it without
-  // changing source. Defaults to the provided Render backend.
   static const String _baseUrl = String.fromEnvironment(
     'API_BASE_URL',
-  // note: backend routes are mounted under /api (see server's index.js)
-  // include '/api' in the default so frontend calls match the backend routes
-  defaultValue: 'https://agenda-relber-e-alan.onrender.com/api',
+    defaultValue: 'https://agenda-relber-e-alan.onrender.com/api',
   );
 
-  // --- Funções de Utilizador ---
   static Future<Map<String, dynamic>> registerUser(String name, String email, String password, DateTime birthDate) async {
     final response = await http.post(
       Uri.parse('$_baseUrl/users/register'),
@@ -77,7 +72,6 @@ class ApiService {
     }
   }
 
-  // --- Funções de Eventos ---
   static Future<List<dynamic>> getEvents(String userId) async {
     final response = await http.get(Uri.parse('$_baseUrl/events/$userId'));
     if (response.statusCode == 200) {
