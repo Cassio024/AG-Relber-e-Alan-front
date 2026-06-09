@@ -22,7 +22,6 @@ class _HomeScreenState extends State<HomeScreen> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  
 
   @override
   void initState() {
@@ -35,7 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     _selectedEvents.dispose();
-    
     super.dispose();
   }
 
@@ -73,14 +71,24 @@ class _HomeScreenState extends State<HomeScreen> {
     return _eventsByDay[dateOnly] ?? [];
   }
 
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (!isSameDay(_selectedDay, selectedDay)) {
-      setState(() {
-        _selectedDay = selectedDay;
-        _focusedDay = focusedDay;
-      });
-      _selectedEvents.value = _getEventsForDay(selectedDay);
-    }
+  // MÉTODO MODIFICADO: Agora seleciona o dia e já abre a tela de registro direto!
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) async {
+    setState(() {
+      _selectedDay = selectedDay;
+      _focusedDay = focusedDay;
+    });
+    _selectedEvents.value = _getEventsForDay(selectedDay);
+
+    // Redireciona automaticamente para a aba/tela de registro do show
+    final result = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(
+        builder: (context) => AddEditEventScreen(
+          userId: widget.user.id,
+          initialDate: selectedDay,
+        ),
+      ),
+    );
+    if (result == true) await _loadAllEvents();
   }
 
   Future<void> _deleteEvent(String eventId) async {
@@ -116,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
           ),
-        ],
+        ),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -178,7 +186,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: ListTile(
                                 title: Text(event.eventName, style: const TextStyle(fontWeight: FontWeight.bold)),
                                 subtitle: Text(event.venue),
-                                // A HORA FOI REMOVIDA DAQUI
                                 onTap: () async {
                                   final result = await Navigator.of(context).push<bool>(
                                     MaterialPageRoute(
