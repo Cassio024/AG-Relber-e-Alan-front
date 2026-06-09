@@ -71,20 +71,21 @@ class _HomeScreenState extends State<HomeScreen> {
     return _eventsByDay[dateOnly] ?? [];
   }
 
-  // MÉTODO MODIFICADO: Agora seleciona o dia e já abre a tela de registro direto!
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) async {
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     setState(() {
       _selectedDay = selectedDay;
       _focusedDay = focusedDay;
     });
     _selectedEvents.value = _getEventsForDay(selectedDay);
+    _irParaRegistro(selectedDay);
+  }
 
-    // Redireciona automaticamente para a aba/tela de registro do show
+  Future<void> _irParaRegistro(DateTime dataSelecionada) async {
     final result = await Navigator.of(context).push<bool>(
       MaterialPageRoute(
         builder: (context) => AddEditEventScreen(
           userId: widget.user.id,
-          initialDate: selectedDay,
+          initialDate: dataSelecionada,
         ),
       ),
     );
@@ -124,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
           ),
-        ),
+        ],
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -140,7 +141,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   startingDayOfWeek: StartingDayOfWeek.monday,
                   onDaySelected: _onDaySelected,
                   eventLoader: _getEventsForDay,
-                  calendarStyle: const CalendarStyle(markerDecoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle)),
+                  calendarStyle: const CalendarStyle(
+                    markerDecoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                  ),
+                  availableCalendarFormats: const {
+                    CalendarFormat.month: 'Mês',
+                    CalendarFormat.twoWeeks: '2 Semanas',
+                    CalendarFormat.week: 'Semana',
+                  },
                   onFormatChanged: (format) {
                     if (_calendarFormat != format) setState(() => _calendarFormat = format);
                   },
@@ -173,8 +181,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                     title: const Text("Confirmar Exclusão"),
                                     content: const Text("Você tem certeza que deseja excluir este evento?"),
                                     actions: <Widget>[
-                                      TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text("Cancelar")),
-                                      TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text("Excluir", style: TextStyle(color: Colors.redAccent))),
+                                      TextButton(
+                                        onPressed: () => Navigator.of(context).pop(false),
+                                        child: const Text("Cancelar"),
+                                      ),
+                                      TextButton(
+                                        onPressed: () => Navigator.of(context).pop(true),
+                                        child: const Text("Excluir", style: TextStyle(color: Colors.redAccent)),
+                                      ),
                                     ],
                                   );
                                 },
@@ -206,16 +220,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final dateToUse = _selectedDay ?? _focusedDay;
-          final result = await Navigator.of(context).push<bool>(
-            MaterialPageRoute(builder: (context) => AddEditEventScreen(userId: widget.user.id, initialDate: dateToUse)),
-          );
-          if (result == true) await _loadAllEvents();
-        },
-        child: const Icon(Icons.add),
-      ),
     );
   }
 }
